@@ -4,7 +4,7 @@ export function createVNode(type, props?, children?) {
     props,
     children,
     // key: props?.["key"],
-    // el: null,
+    el: null,
   };
   return vnode;
 }
