@@ -10,14 +10,14 @@ export const enum ReactiveFlags {
 }
 
 export function reactive(raw) {
-  return createReactiveObject(raw, mutableHandlers);
+  return createActiveObject(raw, mutableHandlers);
 }
 
 export function readonly(raw) {
-  return createReactiveObject(raw, readonlyHandlers);
+  return createActiveObject(raw, readonlyHandlers);
 }
 export function shallowReadonly(raw) {
-  return createReactiveObject(raw, shallowReadonlyHandlers);
+  return createActiveObject(raw, shallowReadonlyHandlers);
 }
 
 export function isReactive(value) {
@@ -32,6 +32,6 @@ export function isProxy(value) {
   return isReactive(value) || isReadonly(value);
 }
 
-function createReactiveObject(raw: any, baseHandlers) {
+function createActiveObject(raw: any, baseHandlers) {
   return new Proxy(raw, baseHandlers);
 }

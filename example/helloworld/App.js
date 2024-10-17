@@ -9,11 +9,11 @@ export const App = {
         id: "root",
         class: ["red", "hard"],
       },
-      "hi " + this.msg
-      // [
-      //   h("div", { class: "red" }, "hi " + this.msg),
-      //   h("p", { class: "blue" }, "mini-vue"),
-      // ]
+      // "hi " + this.msg
+      [
+        h("div", { class: "red" }, "hi " + this.msg),
+        h("p", { class: "blue" }, "mini-vue"),
+      ]
     );
   },
   setup() {

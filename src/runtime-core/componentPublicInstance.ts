@@ -1,5 +1,8 @@
 const publicPropertiesMap = {
-  $el: (i) => i.vnode.el,
+  $el: (i) => {
+    console.log(i.vnode);
+    return i.vnode.el;
+  },
 };
 
 export const PublicInstanceProxyHandlers = {

@@ -1,4 +1,5 @@
 import { isObject } from "../shared/index";
+import { ShapeFlags } from "../shared/shapeFlags";
 import { createComponentInstance } from "./component";
 import { setupComponent } from "./component";
 export function render(vnode, container) {
@@ -6,12 +7,11 @@ export function render(vnode, container) {
   patch(vnode, container);
 }
 function patch(vnode, container) {
-  // 判读 vnode 类型
-  //
-  console.log(vnode.type);
-  if (typeof vnode.type === "string") {
+  //shapeFlag
+  const { shapeFlag } = vnode;
+  if (shapeFlag & ShapeFlags.ELEMENT) {
     processElement(vnode, container);
-  } else if (isObject(vnode.type)) {
+  } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
     processComponent(vnode, container);
   }
 }
@@ -21,11 +21,11 @@ function processElement(vnode, container) {
 
 function mountElement(vnode, container) {
   const el = (vnode.el = document.createElement(vnode.type));
-  //string array
-  const { children } = vnode;
-  if (typeof children === "string") {
+  const { children, shapeFlag } = vnode;
+  //shpaeFlag
+  if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
     el.textContent = children;
-  } else if (Array.isArray(children)) {
+  } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
     mountChildren(vnode, el);
   }
   //props
@@ -56,6 +56,7 @@ function mountComponent(initialVNode, container) {
 function setupRenderEffect(instance, initialVNode, container) {
   const { proxy } = instance;
   const subTree = instance.render.call(proxy);
+  console.log("subTree", subTree);
   // vnode -> patch
   // vnode -> element -> mountElement
   patch(subTree, container);

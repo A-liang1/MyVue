@@ -1,8 +1,9 @@
 import { extend } from "../shared";
-
+// 全局变量
+// 相当于ReactiveEffect的实例对象
 let activeEffect;
 let shouldTrack;
-
+// 类， 响应式的effect类
 export class ReactiveEffect {
   private _fn: any;
   deps = [];
@@ -14,16 +15,17 @@ export class ReactiveEffect {
     this.scheduler = scheduler;
   }
   run() {
+    // 让activeEffect = 当前effect创建的实例对象
     activeEffect = this;
-    // 1. 会收集依赖
-    // shouldTrack 来做区分
+    // active是判断stop状态的变量，false为stop状态；当前为stop状态它就直接执行fn并返回，
+    // 此时shouldTrack还是false,在track中isTracking时，不会收集依赖，直接return
     if (!this.active) {
       return this._fn();
     }
+    //这个为非stop状态，shouldTrack为true，会收集依赖
     shouldTrack = true;
     activeEffect = this;
     const result = this._fn();
-    // reset
     shouldTrack = false;
     return result;
   }
@@ -83,20 +85,19 @@ export function triggerEffects(dep) {
     }
   }
 }
-
+// effect函数， 接受一个函数， 函数会被执行， 函数内部会进行依赖收集， 当数据发生变化时， 会触发依赖
 export function effect(fn, options: any = {}) {
-  //fn
+  // 创建一个响应式的effect实例对象
   const _effect = new ReactiveEffect(fn, options.scheduler);
-  //options
-  // Object.assign(_effect, options);
-  //extend 上述API实现
+  // shared方法，Object.assign 浅拷贝,把options的属性拷贝到_effect上
   extend(_effect, options);
-
+  // 执行effect
   _effect.run();
-
+  // 返回一个runner函数， 函数执行时， 会执行effect的run方法
   const runner: any = _effect.run.bind(_effect);
+  // 把effect实例对象挂载到runner上
   runner.effect = _effect;
-
+  // 返回runner函数
   return runner;
 }
 
