@@ -110,29 +110,71 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 //   h("p", { key: "G" }, "g"),
 // ];
 
-// 2 移动（节点存在于新的和牢大里面，但是位置改变了）
-// 2.1
+// 5.2 移动（节点存在于新的和牢大里面，但是位置改变了）
+// 5.2.1
 // a,b,(c,d,e),f,g
 // a,b,(e,c,d),f,g
+// const prevChildren = [
+//   h("p", { key: "A" }, "a"),
+//   h("p", { key: "B" }, "b"),
+//   h("p", { key: "C" }, "c"),
+//   h("p", { key: "D" }, "d"),
+//   h("p", { key: "E" }, "e"),
+//   h("p", { key: "F" }, "f"),
+//   h("p", { key: "G" }, "g"),
+// ];
+// const nextChildren = [
+//   h("p", { key: "A" }, "a"),
+//   h("p", { key: "B" }, "b"),
+//   h("p", { key: "E" }, "e"),
+//   h("p", { key: "C" }, "c"),
+//   h("p", { key: "D" }, "d"),
+//   h("p", { key: "F" }, "f"),
+//   h("p", { key: "G" }, "g"),
+// ];
+// 5.3 创建新节点
+// a,b,(c,e),f,g
+// a,b,(e,c,d),f,g
+// const prevChildren = [
+//   h("p", { key: "A" }, "a"),
+//   h("p", { key: "B" }, "b"),
+//   h("p", { key: "C" }, "c"),
+//   h("p", { key: "E" }, "e"),
+//   h("p", { key: "F" }, "f"),
+//   h("p", { key: "G" }, "g"),
+// ];
+// const nextChildren = [
+//   h("p", { key: "A" }, "a"),
+//   h("p", { key: "B" }, "b"),
+//   h("p", { key: "E" }, "e"),
+//   h("p", { key: "C" }, "c"),
+//   h("p", { key: "D" }, "d"),
+//   h("p", { key: "F" }, "f"),
+//   h("p", { key: "G" }, "g"),
+// ];
+// 综合例子
+// a,b,(c,d,e,z),f,g
+// a,b,(d,c,y,e),f,g
 const prevChildren = [
   h("p", { key: "A" }, "a"),
   h("p", { key: "B" }, "b"),
   h("p", { key: "C" }, "c"),
   h("p", { key: "D" }, "d"),
   h("p", { key: "E" }, "e"),
+  h("p", { key: "Z" }, "z"),
   h("p", { key: "F" }, "f"),
   h("p", { key: "G" }, "g"),
 ];
 const nextChildren = [
   h("p", { key: "A" }, "a"),
   h("p", { key: "B" }, "b"),
-  h("p", { key: "E" }, "e"),
-  h("p", { key: "C" }, "c"),
   h("p", { key: "D" }, "d"),
+  h("p", { key: "C" }, "c"),
+  h("p", { key: "Y" }, "y"),
+  h("p", { key: "E" }, "e"),
   h("p", { key: "F" }, "f"),
   h("p", { key: "G" }, "g"),
 ];
-
 export default {
   name: "ArrayToArray",
   setup() {
