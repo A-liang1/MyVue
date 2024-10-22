@@ -92,12 +92,34 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 // a,b,(c,e,d),f,g
 // a,b,(e,c),f,g
 // 中间部分，牢大比新的多，那么多出来的直接就可以被干掉(优化删除逻辑)
+// const prevChildren = [
+//   h("p", { key: "A" }, "a"),
+//   h("p", { key: "B" }, "b"),
+//   h("p", { key: "C", id: "c-prev" }, "c"),
+//   h("p", { key: "E" }, "e"),
+//   h("p", { key: "D" }, "d"),
+//   h("p", { key: "F" }, "f"),
+//   h("p", { key: "G" }, "g"),
+// ];
+// const nextChildren = [
+//   h("p", { key: "A" }, "a"),
+//   h("p", { key: "B" }, "b"),
+//   h("p", { key: "E" }, "e"),
+//   h("p", { key: "C", id: "c-next" }, "c"),
+//   h("p", { key: "F" }, "f"),
+//   h("p", { key: "G" }, "g"),
+// ];
+
+// 2 移动（节点存在于新的和牢大里面，但是位置改变了）
+// 2.1
+// a,b,(c,d,e),f,g
+// a,b,(e,c,d),f,g
 const prevChildren = [
   h("p", { key: "A" }, "a"),
   h("p", { key: "B" }, "b"),
-  h("p", { key: "C", id: "c-prev" }, "c"),
-  h("p", { key: "E" }, "e"),
+  h("p", { key: "C" }, "c"),
   h("p", { key: "D" }, "d"),
+  h("p", { key: "E" }, "e"),
   h("p", { key: "F" }, "f"),
   h("p", { key: "G" }, "g"),
 ];
@@ -105,10 +127,12 @@ const nextChildren = [
   h("p", { key: "A" }, "a"),
   h("p", { key: "B" }, "b"),
   h("p", { key: "E" }, "e"),
-  h("p", { key: "C", id: "c-next" }, "c"),
+  h("p", { key: "C" }, "c"),
+  h("p", { key: "D" }, "d"),
   h("p", { key: "F" }, "f"),
   h("p", { key: "G" }, "g"),
 ];
+
 export default {
   name: "ArrayToArray",
   setup() {
