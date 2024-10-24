@@ -9,6 +9,7 @@ export function baseParse(content: string) {
   const context = createParserContext(content);
   return createRoot(parseChildren(context));
 }
+// 解析children功能
 function parseChildren(context) {
   const nodes: any = [];
   let node;
@@ -26,6 +27,7 @@ function parseChildren(context) {
   nodes.push(node);
   return nodes;
 }
+//解析Text功能
 function parseText(context) {
   const content = parseTextData(context, context.source.length);
   return {
@@ -33,16 +35,19 @@ function parseText(context) {
     content,
   };
 }
+//截取并移动功能实现的通用代码
 function parseTextData(context, length) {
   const content = context.source.slice(0, length);
   advanceBy(context, length);
   return content;
 }
+//解析Element功能
 function parseElement(context) {
   const element = parseTag(context, TagType.Start);
   parseTag(context, TagType.End);
   return element;
 }
+//解析Element功能函数
 function parseTag(context, type: TagType) {
   const match: any = /^<\/?([a-z]*)/i.exec(context.source);
   const tag = match[1];
@@ -54,10 +59,10 @@ function parseTag(context, type: TagType) {
     tag,
   };
 }
+//解析插值语法功能
 function parseInterpolation(context) {
   const openDelimiter = "{{";
   const closeDelimiter = "}}";
-
   const closeIndex = context.source.indexOf(
     closeDelimiter,
     openDelimiter.length
@@ -67,7 +72,6 @@ function parseInterpolation(context) {
   const rawContent = parseTextData(context, rawContentLength);
   const content = rawContent.trim();
   advanceBy(context, closeDelimiter.length);
-
   return {
     type: NodeTypes.INTERPOLATION,
     content: {
@@ -85,6 +89,7 @@ function createRoot(children) {
     children,
   };
 }
+// 将传入的content内容提取为context对象
 function createParserContext(content: string) {
   return {
     source: content,
